@@ -1,9 +1,10 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact)
-local NextPartOnArc = require(script.Parent.NextPartOnArc)
 local TextButtonComponent = require(script.Parent.TextButton)
 local AxisSelectionComponent = require(script.Parent.AxisSelection)
 local RotatingByComponent = require(script.Parent.RotatingBy)
+local PartSelectionComponent = require(script.Parent.PartSelection)
 
+local NextCFrameOnArc = require(script.Parent.NextCFrameOnArc)
 local C = require(script.Parent.Constants)
 
 local App = Roact.Component:extend("App")
@@ -124,13 +125,15 @@ function App:render()
 									return
 								end
 
-								local NewPart = NextPartOnArc(
+								local NewCFrame = NextCFrameOnArc(
 									self.state.SelectedPart,
 									self.state.AxisOfRotation,
-									self.state.RotateBy,
+									self.state.RotatingBy,
 									self.state.Mirroring
 								)
 
+								local NewPart = self.state.SelectedPart:Clone()
+								NewPart.CFrame = NewCFrame
 								NewPart.Parent = self.state.SelectedPart.Parent
 
 								self:setState({
@@ -139,7 +142,20 @@ function App:render()
 							end
 						}
 					),
-					
+					PartSelectionController = self.state.Equipped and Roact.createElement(
+						PartSelectionComponent,
+						{
+							NewSelectedPart = function(Part)
+								self:setState({
+									SelectedPart = Part
+								})
+							end,
+							SelectedPart = self.state.SelectedPart,
+							AxisOfRotation = self.state.AxisOfRotation,
+							RotatingBy = self.state.RotatingBy,
+							Mirrored = self.state.Mirrored
+						}
+					)
 				}
 			)
 		}
