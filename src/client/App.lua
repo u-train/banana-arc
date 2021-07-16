@@ -2,6 +2,7 @@ local Roact = require(script.Parent.Parent.Libraries.Roact)
 local NextPartOnArc = require(script.Parent.NextPartOnArc)
 local TextButtonComponent = require(script.Parent.TextButton)
 local AxisSelectionComponent = require(script.Parent.AxisSelection)
+local RotatingByComponent = require(script.Parent.RotatingBy)
 
 local C = require(script.Parent.Constants)
 
@@ -89,7 +90,7 @@ function App:render()
 							end
 						}
 					),
-					Roact.createElement(
+					AxisSelectionControl = Roact.createElement(
 						AxisSelectionComponent,
 						{
 							AxisOfRotation = self.state.AxisOfRotation,
@@ -99,6 +100,18 @@ function App:render()
 									AxisOfRotation = Axis
 								})
 							end,
+						}
+					),
+					RotationControl = Roact.createElement(
+						RotatingByComponent,
+						{
+							LayoutOrder = 4,
+							RotatingBy = self.state.RotatingBy,
+							RotatingByChanged = function(NewRotation)
+								self:setState({
+									RotatingBy = NewRotation
+								})
+							end
 						}
 					),
 					ConfirmButton = Roact.createElement(

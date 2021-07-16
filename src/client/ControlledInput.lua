@@ -12,7 +12,7 @@ function ControlledInput:render()
 	return Roact.createElement(
 		"TextBox",
 		{
-			Text = self.Value,
+			Text = self.InternalValue,
 			Size = self.props.Size or C.DEFAULT_SIZE,
 			Position = self.props.Position,
 			LayoutOrder = self.props.LayoutOrder or 0,
