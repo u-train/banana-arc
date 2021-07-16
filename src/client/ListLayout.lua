@@ -13,14 +13,22 @@ end
 local ListLayout = Roact.Component:extend("ListLayout")
 
 function ListLayout:init()
-	self.SizeBinding = Roact.createBinding()
+	self.SizeBinding, self.UpdateSizeBinding = Roact.createBinding(
+		UDim2.new(
+			self.props.Width,
+			UDim.new(
+				0,
+				0
+			)
+		)
+	)
 end
 
 function ListLayout:render()
 	return Roact.createElement(
 		"Frame",
 		{
-			Size = self.props.Size,
+			Size = self.SizeBinding,
 			Position = self.props.Position,
 			AnchorPoint = self.props.AnchorPoint,
 			BackgroundColor3 = self.props.BackgroundColor3,
@@ -40,7 +48,18 @@ function ListLayout:render()
 							"UIListLayout",
 							{
 								Padding = UDim.new(0, 5),
-								SortOrder = Enum.SortOrder.LayoutOrder
+								SortOrder = Enum.SortOrder.LayoutOrder,
+								[Roact.Change.AbsoluteContentSize] = function(Rbx)
+									self.UpdateSizeBinding(
+										UDim2.new(
+											self.props.Width,
+											UDim.new(
+												0,
+												Rbx.AbsoluteContentSize.Y + 10
+											)
+										)
+									)
+								end
 							}
 						),
 					},

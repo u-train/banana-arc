@@ -53,7 +53,7 @@ function App:render()
 			Container = Roact.createElement(
 				ListLayoutComponent,
 				{
-					Size = UDim2.new(0, 150, 0, 206),
+					Width = UDim.new(0, 150),
 					Position = UDim2.new(0, 5, 0.5, 0),
 					AnchorPoint = Vector2.new(0, 0.5),
 					BackgroundColor3 = C.PRIMARY_BACKGROUND,
