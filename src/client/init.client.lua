@@ -22,7 +22,7 @@ local Handle = Roact.mount(
 	"Banana Tool"
 )
 
-Players.LocalPlayer.Character.Humanoid.Died:Connect( 
+Players.LocalPlayer.Character.Humanoid.Died:Connect(
 	function()
 		Roact.unmount(Handle)
 	end
