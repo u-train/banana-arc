@@ -122,7 +122,8 @@ function App:render()
 								end
 
 								local NewCFrame = NextCFrameOnArc(
-									self.state.SelectedPart,
+									self.state.SelectedPart.CFrame,
+									self.state.SelectedPart.Size,
 									self.state.AxisOfRotation,
 									self.state.RotatingBy,
 									self.state.Mirrored

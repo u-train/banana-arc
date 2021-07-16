@@ -5,22 +5,35 @@ local C = require(script.Parent.Constants)
 
 local PartSelection = Roact.Component:extend("PartSelection")
 
-function PartSelection:getNextCFrame()
+function PartSelection:getListOfNextCFrames(Iterations)
+	Iterations = Iterations or 1
 	if self.props.SelectedPart then
-		return NextCFrameOnArc(
-			self.props.SelectedPart,
-			self.props.AxisOfRotation,
-			self.props.RotatingBy,
-			self.props.Mirrored
-		)
+		local CFrameList = {
+			[0] = self.props.SelectedPart.CFrame
+		}
+
+		for i = 1, Iterations do
+			CFrameList[i] = NextCFrameOnArc(
+				CFrameList[i - 1],
+				self.props.SelectedPart.Size,
+				self.props.AxisOfRotation,
+				self.props.RotatingBy,
+				self.props.Mirrored
+			)
+		end
+
+		CFrameList[0] = nil
+		return CFrameList
 	else
-		return CFrame.new()
+		return { CFrame.new() }
 	end
 end
 
 function PartSelection:init()
 	self.CurrentCFrame, self.UpdateCurrentCFrame = Roact.createBinding(
-		self:getNextCFrame()
+		table.unpack(
+			self:getListOfNextCFrames(1)
+		)
 	)
 
 	self.PreviewPartRef = Roact.createRef()
@@ -76,7 +89,9 @@ end
 
 function PartSelection:render()
 	self.UpdateCurrentCFrame(
-		self:getNextCFrame()
+		table.unpack(
+			self:getListOfNextCFrames(1)
+		)
 	)
 
 	if self.props.SelectedPart == nil then
