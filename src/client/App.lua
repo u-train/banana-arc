@@ -1,7 +1,7 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact)
 local TextButtonComponent = require(script.Parent.TextButton)
 local AxisSelectionComponent = require(script.Parent.AxisSelection)
-local RotatingByComponent = require(script.Parent.RotatingBy)
+local NumericalInputComponent = require(script.Parent.NumericalInput)
 local PartSelectionComponent = require(script.Parent.PartSelection)
 local ListLayoutComponent = require(script.Parent.ListLayout)
 
@@ -18,7 +18,8 @@ function App:init()
 		SelectedPart = nil,
 		AxisOfRotation = "X",
 		Mirrored = false,
-		RotatingBy = 15
+		RotatingBy = 15,
+		Iterations = 1,
 	})
 
 	self._EquippedEvent = self.props.Equipped:Connect(
@@ -100,11 +101,12 @@ function App:render()
 						}
 					),
 					RotationControl = Roact.createElement(
-						RotatingByComponent,
+						NumericalInputComponent,
 						{
+							Value = self.state.RotatingBy,
+							Label = "Rotating By:",
 							LayoutOrder = 4,
-							RotatingBy = self.state.RotatingBy,
-							RotatingByChanged = function(NewRotation)
+							ValueChanged = function(NewRotation)
 								self:setState({
 									RotatingBy = NewRotation
 								})

@@ -19,19 +19,21 @@ return function(Props)
 					BorderSizePixel = 0,
 					BackgroundColor3 = C.SECONDARY_BACKGROUND,
 					TextColor3 = C.TEXT_COLOR,
-					Text = "Rotating by:",
+					Text = Props.Label,
 					Size = UDim2.new(1, 0, 0, 25)
 				}
 			),
 			TextInput = Roact.createElement(
 				ControlledInputComponent,
 				{
-					Value = Props.RotatingBy,
+					Value = Props.Value,
+					ClearTextOnFocus = Props.ClearTextOnFocus,
 					Position = UDim2.fromOffset(0, 25),
+					Size = UDim2.new(1, 0, 0, 25),
 					OnValueChanged = function(Text)
 						local NewRotation = tonumber(Text)
 						if NewRotation == nil then return end
-						Props.RotatingByChanged(NewRotation)
+						Props.ValueChanged(NewRotation)
 					end
 				}
 			),
