@@ -13,7 +13,6 @@ return function(CopiedFrom, Destination)
 	local ShouldBe = CountDescendant(CopiedFrom)
 	local Actual = CountDescendant(Destination)
 
-	print(ShouldBe, Actual)
 	while ShouldBe > Actual do
 		Destination.DescendantAdded:Wait()
 

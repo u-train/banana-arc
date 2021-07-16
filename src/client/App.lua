@@ -125,7 +125,7 @@ function App:render()
 									self.state.SelectedPart,
 									self.state.AxisOfRotation,
 									self.state.RotatingBy,
-									self.state.Mirroring
+									self.state.Mirrored
 								)
 
 								local NewPart = CreatePart:InvokeServer(
