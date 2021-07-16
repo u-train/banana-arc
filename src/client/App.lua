@@ -8,6 +8,8 @@ local ListLayoutComponent = require(script.Parent.ListLayout)
 local NextCFrameOnArc = require(script.Parent.NextCFrameOnArc)
 local C = require(script.Parent.Constants)
 
+local CreatePart = script.Parent.Parent.CreatePart
+
 local App = Roact.Component:extend("App")
 
 function App:init()
@@ -126,9 +128,10 @@ function App:render()
 									self.state.Mirroring
 								)
 
-								local NewPart = self.state.SelectedPart:Clone()
-								NewPart.CFrame = NewCFrame
-								NewPart.Parent = self.state.SelectedPart.Parent
+								local NewPart = CreatePart:InvokeServer(
+									self.state.SelectedPart,
+									NewCFrame
+								)
 
 								self:setState({
 									SelectedPart = NewPart

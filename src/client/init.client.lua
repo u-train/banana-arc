@@ -4,7 +4,12 @@ Tool.Enabled = true
 Tool.ToolTip = "BANANA ROTAT E"
 Tool.RequiresHandle = false
 
-require(script:WaitForChild("WaitUntilLoaded"))(game.StarterPack.Bananas, Tool)
+require(
+	script.Parent:WaitForChild("Shared"):WaitForChild("WaitUntilLoaded")
+)(
+	game.StarterPack.Bananas,
+	Tool
+)
 
 local Players = game:GetService("Players")
 local Roact = require(script.Parent.Libraries.Roact)
@@ -22,7 +27,12 @@ local Handle = Roact.mount(
 	"Banana Tool"
 )
 
-Players.LocalPlayer.Character.Humanoid.Died:Connect(
+local Character = Players.LocalPlayer.Character
+if Character == nil then
+	Character = Players.LocalPlayer.CharacterAdded:Wait()
+end
+
+Character:WaitForChild("Humanoid").Died:Connect(
 	function()
 		Roact.unmount(Handle)
 	end

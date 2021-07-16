@@ -6,7 +6,10 @@
 			"$className": "StarterPack",
 			"Bananas": {
 				"$className": "Tool",
-				"$path": "src"
+				"$path": "src",
+				"CreatePart": {
+					"$className": "RemoteFunction"
+				}
 			}
 		}
 	}
