@@ -1,0 +1,5 @@
+return {
+	PRIMARY_BACKGROUND = Color3.fromRGB(25, 25, 25),
+	SECONDARY_BACKGROUND = Color3.fromRGB(35, 35, 35),
+	TEXT_COLOR = Color3.fromRGB(255, 255, 255),
+}

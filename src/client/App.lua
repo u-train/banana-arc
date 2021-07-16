@@ -1,5 +1,7 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact)
-local ControlledInput = require(script.Parent.ControlledInput)
+local NextPartOnArc = require(script.Parent.NextPartOnArc)
+local C = require(script.Parent.Constants)
+local TextButtonComponent = require(script.Parent.TextButton)
 
 local App = Roact.Component:extend("App")
 
@@ -7,9 +9,9 @@ function App:init()
 	self:setState({
 		Equipped = false,
 		SelectedPart = nil,
-		RotatingOn = "X",
-		Mirror = false,
-		Rotation = 15
+		AxisOfRotation = "X",
+		Mirrored = false,
+		RotatingBy = 15
 	})
 
 	self._EquippedEvent = self.props.Equipped:Connect(
@@ -41,28 +43,74 @@ function App:render()
 			Enabled = self.state.Equipped
 		},
 		{
-			Roact.createElement(
+			Container = Roact.createElement(
 				"Frame",
 				{
 					Size = UDim2.new(0, 150, 0, 206),
 					Position = UDim2.new(0, 5, 0.5, 0),
 					AnchorPoint = Vector2.new(0, 0.5),
-					BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+					BackgroundColor3 = C.PRIMARY_BACKGROUND,
 					BorderSizePixel = 0
 				},
 				{
+					UIListLayout = Roact.createElement(
+						"UIListLayout",
+						{
+							Padding = UDim.new(0, 5),
+							SortOrder = Enum.SortOrder.LayoutOrder
+						}
+					),
 					Title = Roact.createElement(
 						"TextLabel",
 						{
-							BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+							BackgroundColor3 = C.SECONDARY_BACKGROUND,
 							BorderSizePixel = 0,
 							Size = UDim2.new(1, 0, 0, 25),
+							Position = UDim2.fromOffset(0, 5),
 							Font = Enum.Font.SourceSansSemibold,
 							Text = "Banana",
 							TextColor3 = Color3.fromRGB(255, 170, 0),
-							TextSize = 18
+							TextSize = 18,
+							LayoutOrder = 1,
 						}
 					),
+					MirrorControl = Roact.createElement(
+						TextButtonComponent,
+						{
+							Text = self.state.Mirrored and "Mirroring" or "Not mirroring",
+							LayoutOrder = 2,
+							MouseButton1Click = function()
+								self:setState({
+									Mirrored = not self.state.Mirrored
+								})
+							end
+						}
+					),
+					ConfirmButton = Roact.createElement(
+						TextButtonComponent,
+						{
+							Text = "Confirm",
+							LayoutOrder = 10,
+							MouseButton1Click = function()
+								if self.state.SelectedPart == nil then
+									return
+								end
+
+								local NewPart = NextPartOnArc(
+									self.state.SelectedPart,
+									self.state.AxisOfRotation,
+									self.state.RotateBy,
+									self.state.Mirroring
+								)
+
+								NewPart.Parent = self.state.SelectedPart.Parent
+
+								self:setState({
+									SelectedPart = NewPart
+								})
+							end
+						}
+					)
 				}
 			)
 		}
