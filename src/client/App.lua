@@ -3,6 +3,7 @@ local TextButtonComponent = require(script.Parent.TextButton)
 local AxisSelectionComponent = require(script.Parent.AxisSelection)
 local RotatingByComponent = require(script.Parent.RotatingBy)
 local PartSelectionComponent = require(script.Parent.PartSelection)
+local ListLayoutComponent = require(script.Parent.ListLayout)
 
 local NextCFrameOnArc = require(script.Parent.NextCFrameOnArc)
 local C = require(script.Parent.Constants)
@@ -48,7 +49,7 @@ function App:render()
 		},
 		{
 			Container = Roact.createElement(
-				"Frame",
+				ListLayoutComponent,
 				{
 					Size = UDim2.new(0, 150, 0, 206),
 					Position = UDim2.new(0, 5, 0.5, 0),
@@ -57,13 +58,6 @@ function App:render()
 					BorderSizePixel = 0
 				},
 				{
-					UIListLayout = Roact.createElement(
-						"UIListLayout",
-						{
-							Padding = UDim.new(0, 5),
-							SortOrder = Enum.SortOrder.LayoutOrder
-						}
-					),
 					Title = Roact.createElement(
 						"TextLabel",
 						{
