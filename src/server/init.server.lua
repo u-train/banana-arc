@@ -7,7 +7,7 @@ require(
 
 local CreatePart = script.Parent.CreatePart
 local LastPlaced = os.clock()
-local Debounce = 0.5
+local Debounce = 0.25
 
 CreatePart.OnServerInvoke = function(_, TargetPart, NewCFrame)
 	if Debounce >= os.clock() - LastPlaced then
