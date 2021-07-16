@@ -5,7 +5,7 @@ local NumericalInputComponent = require(script.Parent.NumericalInput)
 local PartSelectionComponent = require(script.Parent.PartSelection)
 local ListLayoutComponent = require(script.Parent.ListLayout)
 
-local NextCFrameOnArc = require(script.Parent.NextCFrameOnArc)
+local GetListOfNextCFrames = require(script.Parent.GetListOfNextCFrames)
 local C = require(script.Parent.Constants)
 
 local CreatePart = script.Parent.Parent.CreatePart
@@ -144,17 +144,18 @@ function App:render()
 									return
 								end
 
-								local NewCFrame = NextCFrameOnArc(
+								local List = GetListOfNextCFrames(
 									self.state.SelectedPart.CFrame,
 									self.state.SelectedPart.Size,
 									self.state.AxisOfRotation,
 									self.state.RotatingBy,
+									self.state.Iterations,
 									self.state.Mirrored
 								)
 
 								local NewPart = CreatePart:InvokeServer(
 									self.state.SelectedPart,
-									NewCFrame
+									List
 								)
 
 								self:setState({
@@ -174,7 +175,8 @@ function App:render()
 							SelectedPart = self.state.SelectedPart,
 							AxisOfRotation = self.state.AxisOfRotation,
 							RotatingBy = self.state.RotatingBy,
-							Mirrored = self.state.Mirrored
+							Mirrored = self.state.Mirrored,
+							Iterations = self.state.Iterations
 						}
 					)
 				}

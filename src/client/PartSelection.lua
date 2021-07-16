@@ -1,6 +1,8 @@
 local UserInputService = game:GetService("UserInputService")
 local Roact = require(script.Parent.Parent.Libraries.Roact)
-local NextCFrameOnArc = require(script.Parent.NextCFrameOnArc)
+local SelectionPreviewComponent = require(script.Parent.SelectionPreview)
+
+local GetListOfNextCFrames = require(script.Parent.GetListOfNextCFrames)
 local C = require(script.Parent.Constants)
 
 local PartSelection = Roact.Component:extend("PartSelection")
@@ -8,22 +10,14 @@ local PartSelection = Roact.Component:extend("PartSelection")
 function PartSelection:getListOfNextCFrames(Iterations)
 	Iterations = Iterations or 1
 	if self.props.SelectedPart then
-		local CFrameList = {
-			[0] = self.props.SelectedPart.CFrame
-		}
-
-		for i = 1, Iterations do
-			CFrameList[i] = NextCFrameOnArc(
-				CFrameList[i - 1],
-				self.props.SelectedPart.Size,
-				self.props.AxisOfRotation,
-				self.props.RotatingBy,
-				self.props.Mirrored
-			)
-		end
-
-		CFrameList[0] = nil
-		return CFrameList
+		return GetListOfNextCFrames(
+			self.props.SelectedPart.CFrame,
+			self.props.SelectedPart.Size,
+			self.props.AxisOfRotation,
+			self.props.RotatingBy,
+			Iterations,
+			self.props.Mirrored
+		)
 	else
 		return { CFrame.new() }
 	end
@@ -102,6 +96,30 @@ function PartSelection:render()
 		return self.props.NewSelectedPart(Roact.None)
 	end
 
+	local Children = {}
+	for Key, Value in next, self:getListOfNextCFrames(
+		self.props.Iterations
+	) do
+		Children[Key] = Roact.createElement(
+			SelectionPreviewComponent,
+			{
+				Size = self.props.SelectedPart.Size,
+				CFrame = Value,
+			}
+		)
+	end
+
+	Children.SelectedPartHighlight = Roact.createElement(
+		"SelectionBox",
+		{
+			Color3 = Color3.fromRGB(255, 155, 182),
+			SurfaceColor3 = Color3.fromRGB(255, 121, 179),
+			LineThickness = 0.025,
+			SurfaceTransparency = 0.75,
+			Adornee = self.props.SelectedPart
+		}
+	)
+
 	return Roact.createElement(
 		Roact.Portal,
 		{
@@ -111,41 +129,7 @@ function PartSelection:render()
 			BananaTool = Roact.createElement(
 				"Folder",
 				{},
-				{
-					SelectedPartSelection = Roact.createElement(
-						"SelectionBox",
-						{
-							Color3 = Color3.fromRGB(255, 155, 182),
-							SurfaceColor3 = Color3.fromRGB(255, 121, 179),
-							LineThickness = 0.025,
-							SurfaceTransparency = 0.75,
-							Adornee = self.props.SelectedPart
-						}
-					),
-					PreviewSelection= Roact.createElement(
-						"SelectionBox",
-						{
-							Color3 = Color3.fromRGB(255, 247, 202),
-							SurfaceColor3 = Color3.fromRGB(244, 234, 216),
-							LineThickness = 0.025,
-							SurfaceTransparency = 0.75,
-							Adornee = self.PreviewPartRef
-						}
-					),
-					PreviewPart = Roact.createElement(
-						"Part",
-						{
-							CFrame = self.CurrentCFrame,
-							Size = self.props.SelectedPart.Size,
-							[Roact.Ref] = self.PreviewPartRef,
-							Anchored = true,
-							CanCollide = false,
-							CanTouch = false,
-							Locked = true,
-							Transparency = 1,
-						}
-					)
-				}
+				Children
 			)
 		}
 	)
