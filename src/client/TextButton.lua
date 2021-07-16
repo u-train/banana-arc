@@ -1,8 +1,6 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact)
 local C = require(script.Parent.Constants)
 
-local DEFAULT_SIZE = UDim2.new(1, 0, 0, 25)
-
 return function(Props)
 	return Roact.createElement(
 		"TextButton",
@@ -10,7 +8,7 @@ return function(Props)
 			Text = Props.Text,
 			LayoutOrder = Props.LayoutOrder or 0,
 			BorderSizePixel = Props.BorderSizePixel or 0,
-			Size = Props.Size or DEFAULT_SIZE,
+			Size = Props.Size or C.DEFAULT_SIZE,
 			Position = Props.Position or UDim2.fromOffset(0, 0),
 			[Roact.Event.MouseButton1Click] = Props.MouseButton1Click,
 

@@ -1,4 +1,6 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact)
+local C = require(script.Parent.Constants)
+
 local ControlledInput = Roact.Component:extend("ControlledInput")
 
 function ControlledInput:init()
@@ -11,8 +13,15 @@ function ControlledInput:render()
 		"TextBox",
 		{
 			Text = self.Value,
-			Size = self.props.Size,
+			Size = self.props.Size or C.DEFAULT_SIZE,
 			Position = self.props.Position,
+			LayoutOrder = self.props.LayoutOrder or 0,
+			BorderSizePixel = self.props.BorderSizePixel or 0,
+
+			TextColor3 = C.TEXT_COLOR,
+			BackgroundColor3 = C.SECONDARY_BACKGROUND,
+			BorderColor3 = C.TEXT_COLOR,
+			BorderMode = Enum.BorderMode.Inset,
 
 			[Roact.Change.Text] = function(Rbx)
 				self.UpdateInternalValue(Rbx.Text)
