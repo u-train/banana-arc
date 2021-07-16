@@ -113,6 +113,27 @@ function App:render()
 							end
 						}
 					),
+					IterationsControl = Roact.createElement(
+						NumericalInputComponent,
+						{
+							Value = self.state.Iterations,
+							Label = "Iterations:",
+							LayoutOrder = 5,
+							ValueChanged = function(NewIterationCount)
+								if NewIterationCount <= 0 then
+									return
+								end
+
+								if NewIterationCount > C.ITERATION_LIMIT then
+									return
+								end
+
+								self:setState({
+									Iterations = NewIterationCount
+								})
+							end
+						}
+					),
 					ConfirmButton = Roact.createElement(
 						TextButtonComponent,
 						{
