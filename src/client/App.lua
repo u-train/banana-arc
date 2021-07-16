@@ -1,7 +1,9 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact)
 local NextPartOnArc = require(script.Parent.NextPartOnArc)
-local C = require(script.Parent.Constants)
 local TextButtonComponent = require(script.Parent.TextButton)
+local AxisSelectionComponent = require(script.Parent.AxisSelection)
+
+local C = require(script.Parent.Constants)
 
 local App = Roact.Component:extend("App")
 
@@ -66,7 +68,6 @@ function App:render()
 							BackgroundColor3 = C.SECONDARY_BACKGROUND,
 							BorderSizePixel = 0,
 							Size = UDim2.new(1, 0, 0, 25),
-							Position = UDim2.fromOffset(0, 5),
 							Font = Enum.Font.SourceSansSemibold,
 							Text = "Banana",
 							TextColor3 = Color3.fromRGB(255, 170, 0),
@@ -77,13 +78,27 @@ function App:render()
 					MirrorControl = Roact.createElement(
 						TextButtonComponent,
 						{
-							Text = self.state.Mirrored and "Mirroring" or "Not mirroring",
+							Text = self.state.Mirrored
+								and "Mirroring"
+								or "Not mirroring",
 							LayoutOrder = 2,
 							MouseButton1Click = function()
 								self:setState({
 									Mirrored = not self.state.Mirrored
 								})
 							end
+						}
+					),
+					Roact.createElement(
+						AxisSelectionComponent,
+						{
+							AxisOfRotation = self.state.AxisOfRotation,
+							LayoutOrder = 3,
+							AxisChanged = function(Axis)
+								self:setState({
+									AxisOfRotation = Axis
+								})
+							end,
 						}
 					),
 					ConfirmButton = Roact.createElement(
@@ -110,7 +125,8 @@ function App:render()
 								})
 							end
 						}
-					)
+					),
+					
 				}
 			)
 		}
