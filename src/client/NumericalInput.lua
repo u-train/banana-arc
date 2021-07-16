@@ -15,7 +15,6 @@ function NumericalInput:attemptStartHolding()
 	wait(0.5)
 
 	if self.Holding and coroutine.status(self.HoldingLoop) == "suspended" then
-		print"entering"
 		coroutine.resume(self.HoldingLoop)
 	end
 end
