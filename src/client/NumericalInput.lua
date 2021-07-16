@@ -11,10 +11,17 @@ function NumericalInput:attemptStartHolding()
 		self.props.Value + self.IncrementingBy
 	)
 
+	if self.Holding then
+		return
+	end
 	self.Holding = true
+
 	wait(0.5)
+	-- The mouse could've of left the button or let up at this point,
+	-- setting self.Holding to false.
 
 	if self.Holding and coroutine.status(self.HoldingLoop) == "suspended" then
+		self.Holding = true
 		coroutine.resume(self.HoldingLoop)
 	end
 end
@@ -31,11 +38,10 @@ function NumericalInput:init()
 					self.props.ValueChanged(
 						self.props.Value + self.IncrementingBy
 					)
-
-					wait(0.05)
 				else
 					coroutine.yield()
 				end
+				wait(0.05)
 			end
 		end
 	)
