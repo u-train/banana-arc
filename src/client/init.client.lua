@@ -14,8 +14,8 @@ local Handle = Roact.mount(
 	Roact.createElement(
 		App,
 		{
-			OnEquipped = Tool.Equipped,
-			OnUnequipped = Tool.Unequipped,
+			Equipped = Tool.Equipped,
+			Unequipped = Tool.Unequipped,
 		}
 	),
 	Players.LocalPlayer.PlayerGui,
