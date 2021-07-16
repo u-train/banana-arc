@@ -9,6 +9,7 @@ function ControlledInput:init()
 end
 
 function ControlledInput:render()
+	self.UpdateInternalValue(self.props.Value)
 	return Roact.createElement(
 		"TextBox",
 		{
@@ -33,7 +34,6 @@ function ControlledInput:render()
 			end,
 			[Roact.Event.FocusLost] = function(Rbx)
 				self.props.OnValueChanged(Rbx.Text)
-				self.UpdateInternalValue(self.props.Value)
 			end,
 
 			ClearTextOnFocus = false,

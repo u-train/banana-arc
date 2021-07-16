@@ -10,7 +10,11 @@ return function(Props)
 			BorderSizePixel = Props.BorderSizePixel or 0,
 			Size = Props.Size or C.DEFAULT_SIZE,
 			Position = Props.Position or UDim2.fromOffset(0, 0),
+
 			[Roact.Event.MouseButton1Click] = Props.MouseButton1Click,
+			[Roact.Event.MouseButton1Down] = Props.MouseButton1Down,
+			[Roact.Event.MouseButton1Up] = Props.MouseButton1Up,
+			[Roact.Event.MouseLeave] = Props.MouseLeave,
 
 			TextColor3 = C.TEXT_COLOR,
 			BackgroundColor3 = C.SECONDARY_BACKGROUND,
