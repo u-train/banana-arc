@@ -83,6 +83,10 @@ function PartSelection:render()
 		return
 	end
 
+	if self.props.SelectedPart.Parent == nil then
+		return self.props.NewSelectedPart(Roact.None)
+	end
+
 	return Roact.createElement(
 		Roact.Portal,
 		{
