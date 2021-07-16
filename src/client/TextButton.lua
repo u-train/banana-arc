@@ -1,20 +1,23 @@
 local Roact = require(script.Parent.Parent.Libraries.Roact)
 local C = require(script.Parent.Constants)
 
-local SIZE = UDim2.new(1, 0, 0, 25)
+local DEFAULT_SIZE = UDim2.new(1, 0, 0, 25)
 
 return function(Props)
 	return Roact.createElement(
 		"TextButton",
 		{
 			Text = Props.Text,
-			LayoutOrder = Props.LayoutOrder,
+			LayoutOrder = Props.LayoutOrder or 0,
+			BorderSizePixel = Props.BorderSizePixel or 0,
+			Size = Props.Size or DEFAULT_SIZE,
+			Position = Props.Position or UDim2.fromOffset(0, 0),
 			[Roact.Event.MouseButton1Click] = Props.MouseButton1Click,
 
 			TextColor3 = C.TEXT_COLOR,
 			BackgroundColor3 = C.SECONDARY_BACKGROUND,
-			Size = SIZE,
-			BorderSizePixel = 0,
+			BorderColor3 = C.TEXT_COLOR,
+			BorderMode = Enum.BorderMode.Inset
 		}
 	)
 end
